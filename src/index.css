@@ -4,3 +4,395 @@
   padding: 0;
   margin: 0;
 }
+
+/* Beautiful coffee-inspired login page */
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: white;
+}
+
+.footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.login_page{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #5b2e63 0%, #9e5c4c 100%);
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 380px;
+  transition: all 0.3s ease;
+}
+.login-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.login-title {
+  text-align: center;
+  color: #000000;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 6px;
+}
+
+.input-group input {
+  padding: 12px 14px;
+  border: 1px solid #c2a77e;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+  border-color: #a0782c;
+  box-shadow: 0 0 0 3px rgba(160, 120, 44, 0.2);
+}
+
+
+.login-button {
+  background: #25054e;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+}
+
+.login-button:hover {
+  background: #0f2188;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-text {
+  color: #d8000c;
+  text-align: center;
+  font-size: 14px;
+  background: #ffe6e6;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.navigation{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 40px;
+  border-bottom: 5px solid rgb(197, 72, 0);
+}
+
+.navigation .left{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav_logo{
+  width: 60px;
+}
+
+.navigation .right .button-list button{
+  margin-left: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.navigation .right .button-list button:hover{
+  color: rgb(56, 56, 56);
+}
+
+
+.navigation .logout{
+  background-color: rgb(180, 4, 4);
+  padding: 5px 18px;
+  border-radius: 5px;
+  color: white;
+}
+
+.inventory_container{
+  margin: 20px 40px 2px 40px;
+}
+
+.inventory_container h1{
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  
+}
+
+.inventory_container .line1{
+  width: 80%;
+  margin: auto;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inventory_container .line1 h2{
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+.inventory_container .line1 button{
+  background-color: green;
+  margin-right: 5px;
+  padding: 6px 20px;
+  border-radius: 3px;
+  color: white;
+  font-weight: 700;
+}
+.inventory_container .line2{
+  width: 80%;
+  margin: auto;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.inventory_container .line2 button{
+  background-color: rgb(148, 67, 0);
+  margin-right: 5px;
+  padding: 6px 20px;
+  border-radius: 3px;
+  color: white;
+  font-weight: 700;
+}
+.inventory_container .list_details{
+  background-color: rgb(0, 105, 23);
+  width: 300px;
+  top: 220px;
+  position: absolute;
+  right: 300px;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.inventory_container .list_details h3{
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+.inventory_container .list_details li{
+  background-color: rgb(151, 151, 151);
+  padding: 5px 20px;
+  border-radius: 2px;margin-top: 3px;
+}
+
+.inventory_container .table{
+  margin: auto;
+  width: 80%;
+  background-color: rgb(243, 109, 20);
+  border-radius: 3px;
+  padding: 10px;
+}
+.inventory_container .head-columns{
+  display: grid;
+  grid-template-columns: 300px 150px 150px 150px;
+}
+
+.inventory_container .head-columns div{
+  margin: 0 2px;
+  border-right: 1.5px solid rgb(0, 0, 0);
+  font-size: 17px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+}
+
+.inventory_container .data-table{
+  margin: auto;
+  background-color: rgb(204, 204, 204);
+  border-radius: 3px;
+  padding: 10px;
+  overflow-y: scroll;
+  margin-top: 5px;
+  margin-bottom: 100px;
+  width: 80%;
+  height: 370px;
+}
+
+.inventory_container .data-columns{
+  display: grid;
+  grid-template-columns: 300px 150px 150px 150px 100px;
+}
+
+.inventory_container .data-columns div{
+  margin: 3px 2px;
+  border-right: 1.5px solid rgb(0, 0, 0);
+  font-size: 17px;
+  font-weight: 600;
+  color: rgb(46, 46, 46);
+}
+
+.inventory_container .data-columns img{
+  display: flex;
+  justify-content: center;
+  width: 30px;
+  margin-left: 30px;
+  
+}
+.inventory_container .data-columns input{
+  background-color: rgb(148, 148, 148);
+  padding: 2px 2px;
+  color: rgb(22, 22, 22);
+}
+.inventory_container .data-columns .save{
+  background-color: rgb(5, 187, 29);
+  color: white;
+  padding: 3px 0;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+.petty-cash-container{
+  margin: 20px 40px 2px 40px;
+}
+
+.petty-cash-container .line1{
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 50px;
+}
+
+.petty-cash-container h1{
+  font-size: 22px;
+  font-weight: 700;
+  
+}
+
+.petty-cash-container .line1 button{
+  background-color: rgb(11, 138, 32);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.petty-cash-container .table{
+  margin: auto;
+  width: 90%;
+  background-color: rgb(243, 109, 20);
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.petty-cash-container .head-columns{
+  display: grid;
+  grid-template-columns: 130px 1fr 150px 150px;
+}
+
+.petty-cash-container .head-columns div{
+  margin: 0 2px;
+  border-right: 1.5px solid rgb(0, 0, 0);
+  font-size: 17px;
+  font-weight: 700;
+  color: rgb(29, 29, 29);
+}
+
+.petty-cash-container .data-table{
+  margin: auto;
+  background-color: rgb(204, 204, 204);
+  border-radius: 3px;
+  padding: 10px;
+
+  margin-top: 5px;
+  width: 90%;
+}
+.petty-cash-container .data-columns{
+  display: grid;
+  grid-template-columns: 130px 1fr 150px 150px; 
+}
+
+.add-expense{
+  position: absolute;
+  top: 151px;
+  right: 90px;
+  display: flex;
+  align-items: center;
+ 
+}
+
+.add-expense form{
+  background-color: rgb(31, 128, 2);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.add-expense form h2{
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.add-expense form .box{
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  margin-top: 10px;
+
+}
+.add-expense form .box input{
+  background-color: rgb(233, 233, 233);
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: black;
+  
+}
+.add-expense form button{
+  background-color: rgb(250, 112, 57);
+  margin-top: 20px;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-weight: 700;
+}
