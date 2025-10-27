@@ -17,7 +17,7 @@ const Navigation = () => {
                     <button onClick={() => navigate('/dashboard')}>Dashboard</button>
                     <button onClick={() => navigate('/inventory')}>Inventory</button>
                     <button onClick={() => navigate('/petty-cash')}>Petty Cash</button>
-                    <button onClick={() => navigate('/about')}>About</button>
+                    <button onClick={() => navigate('/ingredients')}>Ingredients</button>
                     <button className='logout'>Logout</button>
                 </div>
 
