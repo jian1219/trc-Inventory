@@ -181,9 +181,10 @@ const Inventory = () => {
         <div className="table">
           <div className="head-columns">
             <div>Item name</div>
-            <div>Beginning stock</div>
-            <div>Quantity Used</div>
-            <div>Ending Stock</div>
+            <div>Start</div>
+            <div>Used</div>
+            <div>End</div>
+            <div>Action</div>
           </div>
         </div>
 
@@ -251,7 +252,10 @@ const Inventory = () => {
                 {list.map((entry) => (
                   <li
                     key={entry.id}
-                    onClick={() => fetchInventoryByTableId(entry.table_id)}
+                    onClick={() => {
+                      fetchInventoryByTableId(entry.table_id)
+                      setShowDiv(false) // ✅ Hide the div after selecting
+                    }}
                     style={{
                       cursor: 'pointer',
                       textDecoration:
@@ -260,6 +264,7 @@ const Inventory = () => {
                   >
                     Date: {entry.date}
                   </li>
+
                 ))}
               </ul>
             ) : (

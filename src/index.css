@@ -22,6 +22,7 @@ body {
   color: white;
   text-align: center;
   padding: 10px 0;
+  font-size: 10px;
 }
 
 .login_page{
@@ -41,7 +42,7 @@ body {
 
 .login-card {
   background: #ffffff;
-  padding: 40px 50px;
+  padding: 20px 30px;
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   width: 380px;
@@ -55,16 +56,16 @@ body {
 .login-title {
   text-align: center;
   color: #000000;
-  font-size: 26px;
+  font-size: 23px;
   font-weight: 600;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 10px;
 }
 .input-group {
   display: flex;
@@ -127,7 +128,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 40px;
+  margin: 5px 40px;
   border-bottom: 5px solid rgb(197, 72, 0);
 }
 
@@ -168,7 +169,7 @@ body {
 }
 
 .nav_logo{
-  width: 60px;
+  width: 40px;
 }
 
 .navigation .right .button-list button{
@@ -201,7 +202,7 @@ body {
 }
 
 .inventory_container .line1{
-  width: 80%;
+  width: 90%;
   margin: auto;
   margin-bottom: 10px;
   display: flex;
@@ -209,7 +210,7 @@ body {
 }
 
 .inventory_container .line1 h2{
-  font-size: 20px;
+  font-size: 17px;
   font-weight: bold;
   
 }
@@ -221,28 +222,30 @@ body {
   border-radius: 3px;
   color: white;
   font-weight: 700;
+  font-size: 14px;
 }
 .inventory_container .line2{
-  width: 80%;
+  width: 90%;
   margin: auto;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
 }
 .inventory_container .line2 button{
-  background-color: rgb(148, 67, 0);
+  background-color: rgb(109, 49, 0);
   margin-right: 5px;
   padding: 6px 20px;
   border-radius: 3px;
   color: white;
   font-weight: 700;
+  font-size: 15px;
 }
 .inventory_container .list_details{
-  background-color: rgb(0, 105, 23);
+  background-color: rgb(3, 141, 33);
   width: 300px;
-  top: 190px;
+  top: 152px;
   position: absolute;
-  right: 300px;
+  right: 225px;
   padding: 10px;
   border-radius: 5px;
   color: white;
@@ -261,14 +264,14 @@ body {
 
 .inventory_container .table{
   margin: auto;
-  width: 80%;
+  width: 90%;
   background-color: rgb(243, 109, 20);
   border-radius: 3px;
   padding: 10px;
 }
 .inventory_container .head-columns{
   display: grid;
-  grid-template-columns: 300px 150px 150px 150px;
+  grid-template-columns: 1fr 90px 90px 90px 100px;
 }
 
 .inventory_container .head-columns div{
@@ -281,27 +284,26 @@ body {
 
 .inventory_container .data-table{
   margin: auto;
-  background-color: rgb(204, 204, 204);
   border-radius: 3px;
   padding: 10px;
   overflow-y: scroll;
   margin-top: 5px;
   margin-bottom: 100px;
-  width: 80%;
-  height: 370px;
+  width: 90%;
+  background-color: rgb(204, 204, 204);
 }
 
 .inventory_container .data-columns{
   display: grid;
-  grid-template-columns: 300px 150px 150px 150px 100px;
+  grid-template-columns: 1fr 90px 90px 90px 100px;
 }
 
 .inventory_container .data-columns div{
   margin: 3px 2px;
   border-right: 1.5px solid rgb(0, 0, 0);
   font-size: 17px;
-  font-weight: 600;
-  color: rgb(46, 46, 46);
+  font-weight: 00;
+  color: rgb(0, 0, 0);
 }
 
 .inventory_container .data-columns img{
@@ -332,11 +334,12 @@ body {
   display: flex;
   justify-content: space-between;
   margin: 5px 50px;
+  align-items: center;
 }
 
 .petty-cash-container h1{
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 19-px;
+  font-weight: 600;
   
 }
 
@@ -345,19 +348,20 @@ body {
   color: white;
   padding: 5px 10px;
   border-radius: 5px;
+  margin-top: 4px;
 }
 
 .petty-cash-container .table{
   margin: auto;
   width: 90%;
-  background-color: rgb(243, 109, 20);
+  background-color: rgb(243, 138, 68);
   border-radius: 3px;
   padding: 10px;
 }
 
 .petty-cash-container .head-columns{
   display: grid;
-  grid-template-columns: 130px 1fr 150px 150px;
+  grid-template-columns: 130px 1fr 150px;
 }
 
 .petty-cash-container .head-columns div{
@@ -379,13 +383,72 @@ body {
 }
 .petty-cash-container .data-columns{
   display: grid;
-  grid-template-columns: 130px 1fr 150px 150px; 
+  grid-template-columns: 130px 1fr 150px; 
+}
+
+.petty-cash-container .history-container{
+  background-color: rgb(10, 141, 27);
+  position: absolute;
+  right: 90px;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: -14px;
+
+}
+
+.petty-cash-container .history-container .create_new_pettyCash{
+  background-color: rgb(235, 115, 4);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 4px;
+  margin-bottom: 5px;
+}
+.petty-cash-container .history-container .create_NewSave{
+  background-color: rgb(1, 196, 34);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.petty-cash-container .history-container .form_create-pettyCash{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.petty-cash-container .history-container .form_create-pettyCash .box{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.petty-cash-container .history-container .form_create-pettyCash div{
+  margin-right: 10px;
+  font-weight: 600;
+  width: 100px;
+}
+
+.petty-cash-container .history-container .form_create-pettyCash input{
+  margin-bottom: 1px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #dadada3b;
+}
+
+.petty-cash-container .history-container .listOfPettycash{
+  background-color: rgb(0, 105, 18);
+  padding: 4px 5px;
+  border-radius: 4px;
 }
 
 .add-expense{
   position: absolute;
-  top: 151px;
-  right: 90px;
+  top: 150px;
+  left: 89px;
   display: flex;
   align-items: center;
  
@@ -428,17 +491,37 @@ body {
 }
 
 .ingredients{
-  margin: 20px 40px 2px 40px;
+  margin: 10px 40px 2px 40px;
 }
 
+.ingredients h1{
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+}
+.ingredients .addButton{
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin: 5px auto;
+}
+
+.ingredients .addButton button{
+  background-color: green;
+  padding: 3px 30px;
+  border-radius: 3px;
+  color: white;
+  font-weight: 700;
+}
 .ingredients .head-table{
-  width: 80%;
+  width: 90%;
   overflow-x: hidden;
   margin: auto;
   background-color: rgb(243, 109, 20);
   padding: 6px 10px;
   display: grid;
-  grid-template-columns: 300px 300px 200px 150px;
+  grid-template-columns: 270px 250px 180px 90px 30px;
   border-radius: 4px;
 }
 
@@ -446,4 +529,39 @@ body {
   color: white;
   border-right: 2px solid black;
   margin-left: 10px;
+}
+
+.ingredients .child-table{
+  width: 90%;
+  overflow-x: hidden;
+  margin: auto;
+  background-color: rgb(204, 204, 204);
+  padding: 6px 10px;
+  display: grid;
+  grid-template-columns: 270px 250px 180px 90px 30px;
+  border-radius: 4px;
+  margin-top: 5px;
+} 
+
+.ingredients .child-table div{
+  align-items: center;
+  display: flex;
+
+}
+
+.ingredients .child-table input{
+  background-color: rgb(156, 156, 156);
+  padding: 3px 5px;
+  border-radius: 5px;
+  margin-right: 4px;
+  color: rgb(43, 43, 43);
+}
+
+.ingredients .child-table .saveButton{
+  background-color: rgb(5, 187, 29);
+  color: white;
+  padding: 3px 0;
+  border-radius: 3px;
+  margin: 0 5px;
+  width: 60px;
 }
