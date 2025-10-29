@@ -4,6 +4,17 @@ import Footer from '../components/Footer'
 import { supabase } from '../lib/supabaseClient'
 import Edit_icon from '../icons/pen.png'
 
+// 🩵 Helper function to format date like "October 25, 2025"
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
 const Inventory = () => {
   const [showDiv, setShowDiv] = useState(false)
   const [items, setItems] = useState([])
@@ -11,8 +22,6 @@ const Inventory = () => {
   const [selectedTableId, setSelectedTableId] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
-  // 🩵 Missing states added
   const [selectedItem, setSelectedItem] = useState(null)
   const [editingData, setEditingData] = useState({})
 
@@ -24,7 +33,7 @@ const Inventory = () => {
         const { data, error } = await supabase
           .from('list_inventory')
           .select('id, date, table_id')
-          .order('date', { ascending: false })
+          .order('date', { ascending: false }) // latest first
 
         if (error) throw error
         setList(data)
@@ -61,27 +70,75 @@ const Inventory = () => {
     }
   }
 
-  // ✅ Add new inventory list
+  // ✅ Add new inventory list — auto fill from ingredients table
   const handleAddInventoryList = async () => {
     const newTableId = crypto.randomUUID()
-    const currentDate = new Date().toISOString().split('T')[0]
+    const currentDate = new Date().toISOString().split('T')[0] // e.g. "2025-10-26"
 
-    const { data, error } = await supabase
+    // 🛑 Check if there is already an entry for today's date
+    const alreadyExists = list.some((entry) => entry.date === currentDate)
+
+    if (alreadyExists) {
+      alert('⚠️ You have already submitted inventory for this day.')
+      return
+    }
+
+    // 🆕 Insert new list
+    const { data: listData, error: listError } = await supabase
       .from('list_inventory')
       .insert([{ date: currentDate, table_id: newTableId }])
       .select()
 
-    if (error) {
-      console.error('Error adding inventory list:', error)
+    if (listError) {
+      console.error('Error adding inventory list:', listError)
       alert('❌ Failed to add new inventory list.')
       return
     }
 
-    setList((prev) => [...prev, ...data])
-    alert('✅ New inventory list added!')
+    // ✅ Fetch all ingredients
+    const { data: ingredients, error: ingredientsError } = await supabase
+      .from('ingredients')
+      .select('ingredients_name')
+
+    if (ingredientsError) {
+      console.error('Error fetching ingredients:', ingredientsError)
+      alert('❌ Failed to fetch ingredients.')
+      return
+    }
+
+    if (ingredients.length === 0) {
+      alert('⚠️ No ingredients found to add.')
+      return
+    }
+
+    // 🧾 Prepare inventory rows
+    const newInventoryRows = ingredients.map((ingredient) => ({
+      table_id: newTableId,
+      item_name: ingredient.ingredients_name,
+      beggining_stock: 0,
+      qty_used: 0,
+      ending_stock: 0,
+    }))
+
+    // 🆕 Insert all ingredients into inventory table
+    const { error: inventoryError } = await supabase
+      .from('inventory')
+      .insert(newInventoryRows)
+
+    if (inventoryError) {
+      console.error('Error inserting ingredients into inventory:', inventoryError)
+      alert('❌ Failed to add ingredients to inventory.')
+      return
+    }
+
+    // ✅ Update local list and open new inventory
+    setList((prev) => [...listData, ...prev])
+    await fetchInventoryByTableId(newTableId)
+    setShowDiv(false)
+    alert('✅ New inventory list added with all ingredients!')
   }
 
-  // ✅ Add item to selected list
+  // ✅ Add single item manually
   const handleAddItem = async () => {
     if (!selectedTableId) {
       alert('⚠️ Please select a list first!')
@@ -144,7 +201,6 @@ const Inventory = () => {
     }
   }
 
-
   const handleToggle = () => setShowDiv(!showDiv)
 
   if (loading) return <p>Loading...</p>
@@ -161,14 +217,15 @@ const Inventory = () => {
           <h2>
             Date:{' '}
             {selectedTableId
-              ? list.find((entry) => entry.table_id === selectedTableId)?.date || 'No date found'
+              ? formatDate(
+                  list.find((entry) => entry.table_id === selectedTableId)?.date
+                ) || 'No date found'
               : 'No list selected'}
           </h2>
           <div>
             <button onClick={handleToggle}>
               {showDiv ? 'Hide List' : 'Show List'}
             </button>
-            <button onClick={handleAddInventoryList}>New Inventory</button>
           </div>
         </div>
 
@@ -219,7 +276,9 @@ const Inventory = () => {
                       value={editingData.ending_stock}
                       onChange={handleChange}
                     />
-                    <button className='save' onClick={() => handleSave(item.id)}>Save</button>
+                    <button className="save" onClick={() => handleSave(item.id)}>
+                      Save
+                    </button>
                   </>
                 ) : (
                   <>
@@ -247,6 +306,12 @@ const Inventory = () => {
         {showDiv && (
           <div className="list_details">
             <h3>📋 Inventory Lists</h3>
+            <button
+              className="new-Inventory-button"
+              onClick={handleAddInventoryList}
+            >
+              New Inventory
+            </button>
             {list.length > 0 ? (
               <ul>
                 {list.map((entry) => (
@@ -254,7 +319,7 @@ const Inventory = () => {
                     key={entry.id}
                     onClick={() => {
                       fetchInventoryByTableId(entry.table_id)
-                      setShowDiv(false) // ✅ Hide the div after selecting
+                      setShowDiv(false)
                     }}
                     style={{
                       cursor: 'pointer',
@@ -262,9 +327,8 @@ const Inventory = () => {
                         selectedTableId === entry.table_id ? 'underline' : 'none',
                     }}
                   >
-                    Date: {entry.date}
+                    Date: {formatDate(entry.date)}
                   </li>
-
                 ))}
               </ul>
             ) : (

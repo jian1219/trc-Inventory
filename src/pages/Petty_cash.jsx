@@ -10,7 +10,7 @@ const PettyCash = () => {
 
   const [pettyCashList, setPettyCashList] = useState([]) // parent table: petty_cash_capital
   const [records, setRecords] = useState([]) // child table: petty_cash
-  const [selectedId, setSelectedId] = useState(null)
+  const [selectedCapital, setSelectedCapital] = useState(null) // 👈 store selected capital object
 
   const [expenseForm, setExpenseForm] = useState({
     date: '',
@@ -38,18 +38,18 @@ const PettyCash = () => {
   }
 
   // ✅ fetch petty_cash (child) based on petty_cash_id
-  const fetchPettyCash = async (petty_cash_id) => {
+  const fetchPettyCash = async (capital) => {
     const { data, error } = await supabase
       .from('petty_cash')
       .select('id, date, description, expense')
-      .eq('petty_cash_id', petty_cash_id)
+      .eq('petty_cash_id', capital.petty_cash_id)
       .order('date', { ascending: true })
 
     if (error) {
       console.error('Error fetching petty_cash:', error)
     } else {
       setRecords(data)
-      setSelectedId(petty_cash_id)
+      setSelectedCapital(capital) // 👈 save entire capital object
     }
   }
 
@@ -83,19 +83,17 @@ const PettyCash = () => {
   const handleAddExpense = async (e) => {
     e.preventDefault()
 
-    if (!selectedId) {
+    if (!selectedCapital) {
       alert('Please select a Petty Cash Capital from History first.')
       return
     }
 
-    const { error } = await supabase.from('petty_cash').insert([
-      {
-        date: expenseForm.date,
-        description: expenseForm.description,
-        expense: parseFloat(expenseForm.expense),
-        petty_cash_id: selectedId,
-      },
-    ])
+    const { error } = await supabase.from('petty_cash').insert([{
+      date: expenseForm.date,
+      description: expenseForm.description,
+      expense: parseFloat(expenseForm.expense),
+      petty_cash_id: selectedCapital.petty_cash_id,
+    }])
 
     if (error) {
       console.error('Error adding expense:', error)
@@ -104,7 +102,7 @@ const PettyCash = () => {
       alert('Expense Added!')
       setShowAddExpense(false)
       setExpenseForm({ date: '', description: '', expense: '' })
-      fetchPettyCash(selectedId)
+      fetchPettyCash(selectedCapital)
     }
   }
 
@@ -119,14 +117,17 @@ const PettyCash = () => {
       <div className="petty-cash-container">
         <div className="line1">
           <div>
-            <h1>Petty Cash Management</h1>
+            {/* ✅ Dynamically show selected capital description */}
+            <h1>
+              Petty Cash: {selectedCapital ? selectedCapital.description : 'Select from History'}
+            </h1>
             <button onClick={() => setShowAddExpense(!showAddExpense)}>
               {showAddExpense ? 'Cancel' : 'Add Expense'}
             </button>
           </div>
           <div>
             <button onClick={() => setShowHistory(!showHistory)}>
-              {showHistory ? 'Hide LIST' : 'COH LIST'}
+              {showHistory ? 'Hide LIST' : 'History'}
             </button>
           </div>
         </div>
@@ -136,9 +137,10 @@ const PettyCash = () => {
           <div className="history-container">
             <h2 className='text-center'>Petty Cash List</h2>
 
-            <button 
-            className='create_new_pettyCash'
-            onClick={() => setShowNewCapital(!showNewCapital)}>
+            <button
+              className='create_new_pettyCash'
+              onClick={() => setShowNewCapital(!showNewCapital)}
+            >
               {showNewCapital ? 'Cancel' : 'Create New'}
             </button>
 
@@ -155,9 +157,7 @@ const PettyCash = () => {
                     type="text"
                     placeholder="Enter description"
                     value={capitalForm.description}
-                    onChange={(e) =>
-                      setCapitalForm({ ...capitalForm, description: e.target.value })
-                    }
+                    onChange={(e) => setCapitalForm({ ...capitalForm, description: e.target.value })}
                     required
                   />
                 </div>
@@ -167,9 +167,7 @@ const PettyCash = () => {
                     type="number"
                     placeholder="Enter amount"
                     value={capitalForm.amount}
-                    onChange={(e) =>
-                      setCapitalForm({ ...capitalForm, amount: e.target.value })
-                    }
+                    onChange={(e) => setCapitalForm({ ...capitalForm, amount: e.target.value })}
                     required
                   />
                 </div>
@@ -180,25 +178,26 @@ const PettyCash = () => {
             {/* ✅ List of Capitals */}
             {pettyCashList.length > 0 ? (
               <ul>
-                {pettyCashList.length > 0 ? (
-              <ul>
                 {pettyCashList.map((capital) => (
                   <li
                     className='listOfPettycash'
                     key={capital.id}
                     onClick={async () => {
-                      await fetchPettyCash(capital.petty_cash_id);
-                      setShowHistory(false); // 👈 hide the history section after success
+                      await fetchPettyCash(capital)
+                      setShowHistory(false)
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      textDecoration:
+                        selectedCapital?.petty_cash_id === capital.petty_cash_id
+                          ? 'underline'
+                          : 'transparent',
+                      padding: '4px',
                     }}
                   >
                     {capital.date} — {capital.description} — ₱{capital.amount}
                   </li>
                 ))}
-              </ul>
-              ) : (
-                <p>No Petty Cash Capital yet.</p>
-              )}
-
               </ul>
             ) : (
               <p>No Petty Cash Capital yet.</p>
@@ -250,9 +249,7 @@ const PettyCash = () => {
                   type="text"
                   placeholder="Description"
                   value={expenseForm.description}
-                  onChange={(e) =>
-                    setExpenseForm({ ...expenseForm, description: e.target.value })
-                  }
+                  onChange={(e) => setExpenseForm({ ...expenseForm, description: e.target.value })}
                   required
                 />
               </div>
@@ -262,9 +259,7 @@ const PettyCash = () => {
                   type="number"
                   placeholder="Amount"
                   value={expenseForm.expense}
-                  onChange={(e) =>
-                    setExpenseForm({ ...expenseForm, expense: e.target.value })
-                  }
+                  onChange={(e) => setExpenseForm({ ...expenseForm, expense: e.target.value })}
                   required
                 />
               </div>

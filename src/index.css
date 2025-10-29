@@ -190,7 +190,7 @@ body {
 }
 
 .inventory_container{
-  margin: 20px 40px 2px 40px;
+  margin: 12px 40px 2px 40px;
 }
 
 .inventory_container h1{
@@ -204,7 +204,7 @@ body {
 .inventory_container .line1{
   width: 90%;
   margin: auto;
-  margin-bottom: 10px;
+  margin-bottom: 1px;
   display: flex;
   justify-content: space-between;
 }
@@ -245,10 +245,25 @@ body {
   width: 300px;
   top: 152px;
   position: absolute;
-  right: 225px;
+  right: 94px;
   padding: 10px;
   border-radius: 5px;
   color: white;
+}
+
+.inventory_container .list_details ul{
+  height: 240px;
+  overflow-y: scroll;
+}
+
+.inventory_container .new-Inventory-button{
+  background-color: rgb(207, 111, 1);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  
 }
 
 .inventory_container .list_details h3{
@@ -288,9 +303,9 @@ body {
   padding: 10px;
   overflow-y: scroll;
   margin-top: 5px;
-  margin-bottom: 100px;
   width: 90%;
   background-color: rgb(204, 204, 204);
+  height: 260px;
 }
 
 .inventory_container .data-columns{
@@ -529,6 +544,13 @@ body {
   color: white;
   border-right: 2px solid black;
   margin-left: 10px;
+}
+
+.ingredients .container-chil-table{
+  padding: 5px 0;
+  height: 300px;
+  overflow-y: scroll;
+  margin-top: 5px;
 }
 
 .ingredients .child-table{

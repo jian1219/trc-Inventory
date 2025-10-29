@@ -114,60 +114,65 @@ const About = () => {
           <div>Price</div>
         </div>
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : ingredients.length > 0 ? (
-          ingredients.map((item) => (
-            <div key={item.id} className="child-table">
-              {editingId === item.id ? (
-                <>
-                  <input
-                    type="text"
-                    name="ingredients_name"
-                    value={editData.ingredients_name}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="text"
-                    name="description"
-                    value={editData.description}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="text"
-                    name="supplier"
-                    value={editData.supplier}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="number"
-                    name="price"
-                    value={editData.price}
-                    onChange={handleChange}
-                  />
-                  <button className='saveButton' onClick={() => handleSave(item.id)}>Save</button>
-                </>
-              ) : (
-                <>
-                  <div>{item.ingredients_name}</div>
-                  <div>{item.description}</div>
-                  <div>{item.supplier}</div>
-                  <div>{item.price}</div>
-                  <div
-                    onClick={() => handleEdit(item)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <img src={editIcon} alt="edit" width="20px" />
-                  </div>
-                </>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>No ingredients found.</p>
-        )}
+        <div className='container-chil-table'>
+          {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p>{error}</p>
+            ) : ingredients.length > 0 ? (
+              ingredients.map((item) => (
+                <div key={item.id} className="child-table">
+                  {editingId === item.id ? (
+                    <>
+                      <input
+                        type="text"
+                        name="ingredients_name"
+                        value={editData.ingredients_name}
+                        onChange={handleChange}
+                      />
+                      <input
+                        type="text"
+                        name="description"
+                        value={editData.description}
+                        onChange={handleChange}
+                      />
+                      <input
+                        type="text"
+                        name="supplier"
+                        value={editData.supplier}
+                        onChange={handleChange}
+                      />
+                      <input
+                        type="number"
+                        name="price"
+                        value={editData.price}
+                        onChange={handleChange}
+                      />
+                      <button className='saveButton' onClick={() => handleSave(item.id)}>Save</button>
+                    </>
+                  ) : (
+                    <>
+                      <div>{item.ingredients_name}</div>
+                      <div>{item.description}</div>
+                      <div>{item.supplier}</div>
+                      <div>{item.price}</div>
+                      <div
+                        onClick={() => handleEdit(item)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <img src={editIcon} alt="edit" width="20px" />
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>No ingredients found.</p>
+            )}
+
+        </div>
+
+        
       </div>
 
       <Footer />
