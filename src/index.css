@@ -303,6 +303,7 @@ body {
   padding: 10px;
   overflow-y: scroll;
   margin-top: 5px;
+
   width: 90%;
   background-color: rgb(204, 204, 204);
   height: 260px;
@@ -456,7 +457,8 @@ body {
 
 .petty-cash-container .history-container .listOfPettycash{
   background-color: rgb(0, 105, 18);
-  padding: 4px 5px;
+  padding: 4px 10px;
+  margin-top: 3px;
   border-radius: 4px;
 }
 

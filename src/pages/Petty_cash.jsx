@@ -119,7 +119,7 @@ const PettyCash = () => {
           <div>
             {/* ✅ Dynamically show selected capital description */}
             <h1>
-              Petty Cash: {selectedCapital ? selectedCapital.description : 'Select from History'}
+              Expense From: {selectedCapital ? selectedCapital.description : 'Select from History'}
             </h1>
             <button onClick={() => setShowAddExpense(!showAddExpense)}>
               {showAddExpense ? 'Cancel' : 'Add Expense'}
@@ -127,7 +127,7 @@ const PettyCash = () => {
           </div>
           <div>
             <button onClick={() => setShowHistory(!showHistory)}>
-              {showHistory ? 'Hide LIST' : 'History'}
+              {showHistory ? 'Hide LIST' : 'LIST'}
             </button>
           </div>
         </div>
@@ -135,7 +135,7 @@ const PettyCash = () => {
         {/* ✅ HISTORY DIV */}
         {showHistory && (
           <div className="history-container">
-            <h2 className='text-center'>Petty Cash List</h2>
+            <h2 className='text-center'>Expense List</h2>
 
             <button
               className='create_new_pettyCash'

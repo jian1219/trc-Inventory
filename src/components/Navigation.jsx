@@ -4,7 +4,13 @@ import logo from '../images/logo_trc.png';
 
 const Navigation = () => {
 
-     const navigate = useNavigate()
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+    localStorage.removeItem('user')
+    navigate('/')
+}
+
 
     return (
         <div className='navigation'>
@@ -16,9 +22,9 @@ const Navigation = () => {
                 <div className='button-list'>
                     <button onClick={() => navigate('/dashboard')}>Dashboard</button>
                     <button onClick={() => navigate('/inventory')}>Inventory</button>
-                    <button onClick={() => navigate('/petty-cash')}>Petty Cash</button>
+                    <button onClick={() => navigate('/petty-cash')}>Expense</button>
                     <button onClick={() => navigate('/ingredients')}>Ingredients</button>
-                    <button className='logout'>Logout</button>
+                    <button onClick={handleLogout} className='logout'>Logout</button>
                 </div>
 
             </div>

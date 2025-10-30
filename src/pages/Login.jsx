@@ -25,11 +25,14 @@ const Login = () => {
     setLoading(false)
 
     if (error || !data) {
-      setError('Invalid username or password ❌')
-    } else {
-      console.log('✅ Login success:', data)
-      navigate('/dashboard')
-    }
+        setError('Invalid username or password ❌')
+      } else {
+        console.log('✅ Login success:', data)
+        // Save login state (you can store user ID or username)
+        localStorage.setItem('user', JSON.stringify(data))
+        navigate('/dashboard')
+      }
+
   }
 
   return (

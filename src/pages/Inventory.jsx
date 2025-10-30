@@ -33,7 +33,7 @@ const Inventory = () => {
         const { data, error } = await supabase
           .from('list_inventory')
           .select('id, date, table_id')
-          .order('date', { ascending: false }) // latest first
+          .order('date', { ascending: false })
 
         if (error) throw error
         setList(data)
@@ -49,7 +49,7 @@ const Inventory = () => {
     fetchListInventory()
   }, [])
 
-  // ✅ Fetch inventory (child table) based on selected table_id
+  // ✅ Fetch inventory (child table)
   const fetchInventoryByTableId = async (tableId) => {
     try {
       setLoading(true)
@@ -70,75 +70,102 @@ const Inventory = () => {
     }
   }
 
-  // ✅ Add new inventory list — auto fill from ingredients table
+  // ✅ Add new inventory list — auto fill from previous day's ending_stock
   const handleAddInventoryList = async () => {
     const newTableId = crypto.randomUUID()
-    const currentDate = new Date().toISOString().split('T')[0] // e.g. "2025-10-26"
+    const currentDate = new Date().toISOString().split('T')[0]
 
-    // 🛑 Check if there is already an entry for today's date
+    // 🛑 Check if today already exists
     const alreadyExists = list.some((entry) => entry.date === currentDate)
-
     if (alreadyExists) {
-      alert('⚠️ You have already submitted inventory for this day.')
+      alert('⚠️ You already created inventory for today.')
       return
     }
 
-    // 🆕 Insert new list
+    // 🆕 Create new list record
     const { data: listData, error: listError } = await supabase
       .from('list_inventory')
       .insert([{ date: currentDate, table_id: newTableId }])
       .select()
 
     if (listError) {
-      console.error('Error adding inventory list:', listError)
-      alert('❌ Failed to add new inventory list.')
+      console.error('Error adding new list:', listError)
+      alert('❌ Failed to add new list.')
       return
     }
 
-    // ✅ Fetch all ingredients
-    const { data: ingredients, error: ingredientsError } = await supabase
-      .from('ingredients')
-      .select('ingredients_name')
+    // 🧭 Get most recent (previous) inventory list
+    const { data: prevList, error: prevError } = await supabase
+      .from('list_inventory')
+      .select('table_id, date')
+      .order('date', { ascending: false })
+      .range(1, 1) // get the 2nd newest (yesterday)
 
-    if (ingredientsError) {
-      console.error('Error fetching ingredients:', ingredientsError)
-      alert('❌ Failed to fetch ingredients.')
-      return
+    if (prevError) console.error('Error getting previous list:', prevError)
+
+    let newInventoryRows = []
+
+    if (prevList && prevList.length > 0) {
+      // ✅ Copy yesterday’s inventory ending_stock → new beginning_stock
+      const prevTableId = prevList[0].table_id
+      const { data: prevInventory, error: invError } = await supabase
+        .from('inventory')
+        .select('item_name, ending_stock')
+        .eq('table_id', prevTableId)
+
+      if (invError) {
+        console.error('Error fetching previous inventory:', invError)
+        alert('❌ Failed to fetch previous inventory.')
+        return
+      }
+
+      newInventoryRows = prevInventory.map((item) => ({
+        table_id: newTableId,
+        item_name: item.item_name,
+        beggining_stock: item.ending_stock || 0,
+        qty_used: 0,
+        ending_stock: 0,
+      }))
+    } else {
+      // 🧾 If no previous list, use ingredients as base
+      const { data: ingredients, error: ingredientsError } = await supabase
+        .from('ingredients')
+        .select('ingredients_name')
+
+      if (ingredientsError) {
+        console.error('Error fetching ingredients:', ingredientsError)
+        alert('❌ Failed to fetch ingredients.')
+        return
+      }
+
+      newInventoryRows = ingredients.map((ingredient) => ({
+        table_id: newTableId,
+        item_name: ingredient.ingredients_name,
+        beggining_stock: 0,
+        qty_used: 0,
+        ending_stock: 0,
+      }))
     }
 
-    if (ingredients.length === 0) {
-      alert('⚠️ No ingredients found to add.')
-      return
-    }
-
-    // 🧾 Prepare inventory rows
-    const newInventoryRows = ingredients.map((ingredient) => ({
-      table_id: newTableId,
-      item_name: ingredient.ingredients_name,
-      beggining_stock: 0,
-      qty_used: 0,
-      ending_stock: 0,
-    }))
-
-    // 🆕 Insert all ingredients into inventory table
-    const { error: inventoryError } = await supabase
+    // 🆕 Insert new inventory rows
+    const { error: insertError } = await supabase
       .from('inventory')
       .insert(newInventoryRows)
 
-    if (inventoryError) {
-      console.error('Error inserting ingredients into inventory:', inventoryError)
-      alert('❌ Failed to add ingredients to inventory.')
+    if (insertError) {
+      console.error('Error inserting new inventory:', insertError)
+      alert('❌ Failed to add inventory rows.')
       return
     }
 
-    // ✅ Update local list and open new inventory
+    // ✅ Update UI and open the new list
     setList((prev) => [...listData, ...prev])
     await fetchInventoryByTableId(newTableId)
     setShowDiv(false)
-    alert('✅ New inventory list added with all ingredients!')
+    alert('✅ New daily inventory created successfully!')
   }
 
-  // ✅ Add single item manually
+  // ✅ Add item manually
   const handleAddItem = async () => {
     if (!selectedTableId) {
       alert('⚠️ Please select a list first!')
@@ -165,19 +192,19 @@ const Inventory = () => {
     alert('✅ New item added!')
   }
 
-  // ✅ Handle edit click
+  // ✅ Edit handler
   const handleEdit = (item) => {
     setSelectedItem(item.id)
     setEditingData({ ...item })
   }
 
-  // ✅ Handle input changes while editing
+  // ✅ Input change
   const handleChange = (e) => {
     const { name, value } = e.target
     setEditingData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // ✅ Save edited data
+  // ✅ Save edit
   const handleSave = async (id) => {
     const { error } = await supabase
       .from('inventory')
@@ -197,7 +224,6 @@ const Inventory = () => {
         prev.map((item) => (item.id === id ? { ...item, ...editingData } : item))
       )
       setSelectedItem(null)
-      alert('✅ Item updated successfully!')
     }
   }
 
@@ -212,14 +238,11 @@ const Inventory = () => {
       <div className="inventory_container">
         <h1>INVENTORY</h1>
 
-        {/* 🔹 Header controls */}
         <div className="line1">
           <h2>
             Date:{' '}
             {selectedTableId
-              ? formatDate(
-                  list.find((entry) => entry.table_id === selectedTableId)?.date
-                ) || 'No date found'
+              ? formatDate(list.find((e) => e.table_id === selectedTableId)?.date)
               : 'No list selected'}
           </h2>
           <div>
@@ -229,12 +252,11 @@ const Inventory = () => {
           </div>
         </div>
 
-        {/* 🔹 Add item */}
         <div className="line2">
           <button onClick={handleAddItem}>ADD ITEM</button>
         </div>
 
-        {/* 🔹 Table header */}
+        {/* Table */}
         <div className="table">
           <div className="head-columns">
             <div>Item name</div>
@@ -245,7 +267,6 @@ const Inventory = () => {
           </div>
         </div>
 
-        {/* 🔹 Data rows */}
         <div className="data-table">
           {items.length > 0 ? (
             items.map((item) => (
@@ -259,26 +280,24 @@ const Inventory = () => {
                       onChange={handleChange}
                     />
                     <input
-                      type="number"
+                      type="text"
                       name="beggining_stock"
                       value={editingData.beggining_stock}
                       onChange={handleChange}
                     />
                     <input
-                      type="number"
+                      type="text"
                       name="qty_used"
                       value={editingData.qty_used}
                       onChange={handleChange}
                     />
                     <input
-                      type="number"
+                      type="text"
                       name="ending_stock"
                       value={editingData.ending_stock}
                       onChange={handleChange}
                     />
-                    <button className="save" onClick={() => handleSave(item.id)}>
-                      Save
-                    </button>
+                    <button onClick={() => handleSave(item.id)}>Save</button>
                   </>
                 ) : (
                   <>
@@ -302,16 +321,14 @@ const Inventory = () => {
           )}
         </div>
 
-        {/* 🔹 List of Inventory Groups */}
+        {/* 🔹 Hidden div: List of Inventories */}
         {showDiv && (
           <div className="list_details">
             <h3>📋 Inventory Lists</h3>
-            <button
-              className="new-Inventory-button"
-              onClick={handleAddInventoryList}
-            >
+            <button className="new-Inventory-button" onClick={handleAddInventoryList}>
               New Inventory
             </button>
+
             {list.length > 0 ? (
               <ul>
                 {list.map((entry) => (
@@ -337,6 +354,7 @@ const Inventory = () => {
           </div>
         )}
       </div>
+
       <Footer />
     </div>
   )

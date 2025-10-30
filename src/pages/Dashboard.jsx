@@ -74,7 +74,7 @@ const Dashboard = () => {
 
           <div className='box'>
             <h1>{petty_cash_capital_count}</h1> {/* ✅ display count */}
-            <h2>Total Petty Cash</h2>
+            <h2>Total List Expense</h2>
           </div>
 
           <div className='box'>
