@@ -297,7 +297,7 @@ const Inventory = () => {
                       value={editingData.ending_stock}
                       onChange={handleChange}
                     />
-                    <button onClick={() => handleSave(item.id)}>Save</button>
+                    <button className='save' onClick={() => handleSave(item.id)}>Save</button>
                   </>
                 ) : (
                   <>
