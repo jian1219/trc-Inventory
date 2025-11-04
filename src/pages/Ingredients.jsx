@@ -57,6 +57,7 @@ const About = () => {
       console.error('❌ Error adding ingredient:', error.message);
       alert('Failed to add ingredient.');
     } else {
+      alert("Successfully added new ingredient.");
       setIngredients((prev) => [...prev, ...data]);
     }
   };
