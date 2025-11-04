@@ -393,9 +393,10 @@ body {
   background-color: rgb(204, 204, 204);
   border-radius: 3px;
   padding: 10px;
-
+  height: 280px;
   margin-top: 5px;
   width: 90%;
+  overflow-y: scroll;
 }
 .petty-cash-container .data-columns{
   display: grid;
